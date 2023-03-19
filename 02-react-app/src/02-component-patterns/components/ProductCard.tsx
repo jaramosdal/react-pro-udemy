@@ -6,9 +6,6 @@ import {
   ProductContextProps,
   ProductCardProps,
 } from "../../interfaces/interfaces";
-import { ProductTitle } from "./ProductTitle";
-import { ProductImage } from "./ProductImage";
-import { ProductButtons } from "./ProductButtons";
 
 export const ProductContext = createContext({} as ProductContextProps);
 const { Provider } = ProductContext;

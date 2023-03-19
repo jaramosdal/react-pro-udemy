@@ -17,3 +17,10 @@ export interface ProductContextProps {
   decreaseBy: (value: number) => void;
   product: Product;
 }
+
+export interface ProductCardHOCProps {
+  ({ product, children }: ProductCardProps): JSX.Element;
+  Title: ({ title }: { title?: string | undefined }) => JSX.Element;
+  Image: ({ img }: { img?: string | undefined }) => JSX.Element;
+  Buttons: () => JSX.Element;
+}

@@ -23,11 +23,11 @@ const ShoppingPage = () => {
           flexWrap: "wrap",
         }}
       >
-        {/* <ProductCard product={product}>
+        <ProductCard product={product}>
           <ProductCard.Image />
           <ProductCard.Title title={"Hola mundo"} />
           <ProductCard.Buttons />
-        </ProductCard> */}
+        </ProductCard>
 
         <ProductCard product={product}>
           <ProductImage />
