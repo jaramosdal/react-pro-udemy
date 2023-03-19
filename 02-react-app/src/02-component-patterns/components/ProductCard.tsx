@@ -1,10 +1,12 @@
-import { useProduct } from "../hooks/useProduct";
+import { createContext, ReactElement, useContext } from "react";
 
 import styles from "../styles/styles.module.css";
 import noImage from "../assets/no-image.jpg";
+import { useProduct } from "../hooks/useProduct";
 
 interface Props {
   product: Product;
+  children?: ReactElement | ReactElement[];
 }
 
 interface Product {
@@ -13,31 +15,41 @@ interface Product {
   img?: string;
 }
 
-export const ProductImage = ({ img = "" }) => {
-  return (
-    <img
-      className={styles.productImg}
-      src={img ? img : noImage}
-      alt="Product"
-    />
-  );
-};
-
-export const ProductTitle = ({ title }: { title: string }) => {
-  return <span className={styles.productDescription}>{title}</span>;
-};
-
-interface ProductButtonsProps {
+interface ProductContextProps {
   counter: number;
   increaseBy: (value: number) => void;
   decreaseBy: (value: number) => void;
+  product: Product;
 }
 
-export const ProductButtons = ({
-  counter,
-  increaseBy,
-  decreaseBy,
-}: ProductButtonsProps) => {
+const ProductContext = createContext({} as ProductContextProps);
+const { Provider } = ProductContext;
+
+export const ProductImage = ({ img = "" }) => {
+  const { product } = useContext(ProductContext);
+  let imgToShow: string;
+
+  if (img) {
+    imgToShow = img;
+  } else if (product.img) {
+    imgToShow = product.img;
+  } else {
+    imgToShow = noImage;
+  }
+
+  return <img className={styles.productImg} src={imgToShow} alt="Product" />;
+};
+
+export const ProductTitle = ({ title }: { title?: string }) => {
+  const { product } = useContext(ProductContext);
+  let titleToShow = title ?? product.title;
+
+  return <span className={styles.productDescription}>{titleToShow}</span>;
+};
+
+export const ProductButtons = () => {
+  const { decreaseBy, increaseBy, counter } = useContext(ProductContext);
+
   return (
     <div className={styles.buttonsContainer}>
       <button className={styles.buttonMinus} onClick={() => decreaseBy(1)}>
@@ -51,20 +63,24 @@ export const ProductButtons = ({
   );
 };
 
-const ProductCard = ({ product }: Props) => {
+const ProductCard = ({ product, children }: Props) => {
   const { counter, increaseBy, decreaseBy } = useProduct();
-
   return (
-    <div className={styles.productCard}>
-      <ProductImage img={product.img} />
-      <ProductTitle title={product.title} />
-      <ProductButtons
-        counter={counter}
-        increaseBy={increaseBy}
-        decreaseBy={decreaseBy}
-      />
-    </div>
+    <Provider
+      value={{
+        counter,
+        increaseBy,
+        decreaseBy,
+        product,
+      }}
+    >
+      <div className={styles.productCard}>{children}</div>
+    </Provider>
   );
 };
 
 export default ProductCard;
+
+ProductCard.Title = ProductTitle;
+ProductCard.Image = ProductImage;
+ProductCard.Buttons = ProductButtons;
