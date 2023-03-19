@@ -5,7 +5,7 @@ import { useProduct } from "../hooks/useProduct";
 import {
   ProductContextProps,
   ProductCardProps,
-} from "../../interfaces/interfaces";
+} from "../interfaces/interfaces";
 
 export const ProductContext = createContext({} as ProductContextProps);
 const { Provider } = ProductContext;
