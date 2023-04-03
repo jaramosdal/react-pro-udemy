@@ -27,10 +27,9 @@ interface ProductInCart extends Product {
 }
 
 const ShoppingPage = () => {
-  const [shoppingCart, setShoppingCart] = useState({
-    "1": { ...product1, count: 10 },
-    "2": { ...product2, count: 2 },
-  });
+  const [shoppingCart, setShoppingCart] = useState<{
+    [key: string]: ProductInCart;
+  }>();
 
   return (
     <div>
