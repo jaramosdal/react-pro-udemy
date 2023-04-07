@@ -5,7 +5,7 @@ import {
   ProductImage,
   ProductTitle,
 } from "../components";
-import { Product } from "../interfaces/interfaces";
+import { Product, onChangeArgs } from "../interfaces/interfaces";
 import "../styles/custom-styles.css";
 
 const product1 = {
@@ -29,10 +29,20 @@ interface ProductInCart extends Product {
 const ShoppingPage = () => {
   const [shoppingCart, setShoppingCart] = useState<{
     [key: string]: ProductInCart;
-  }>();
+  }>({});
 
-  const onProductCountChange = () => {
-    console.log("onProductCountChange");
+  const onProductCountChange = ({ count, product }: onChangeArgs) => {
+    setShoppingCart((oldShoppingCart) => {
+      if (count === 0 && oldShoppingCart) {
+        const { [product.id]: toDelete, ...rest } = oldShoppingCart;
+        return rest;
+      }
+
+      return {
+        ...shoppingCart,
+        [product.id]: { ...product, count },
+      };
+    });
   };
 
   return (
@@ -51,7 +61,7 @@ const ShoppingPage = () => {
             key={product.id}
             product={product}
             className="bg-dark text-white"
-            onChange={() => onProductCountChange()}
+            onChange={onProductCountChange}
           >
             <ProductImage
               className="custom-image"
@@ -64,18 +74,26 @@ const ShoppingPage = () => {
       </div>
 
       <div className="shopping-cart">
-        {products.map((product) => (
+        {Object.entries(shoppingCart).map(([key, product]) => (
           <ProductCard
-            key={product.id}
+            key={key}
             product={product}
             className="bg-dark text-white"
             style={{ width: "100px" }}
+            onChange={onProductCountChange}
+            value={product.count}
           >
             <ProductImage
               className="custom-image"
               style={{ boxShadow: "10px 10px 10px rgba(0,0,0,0.5)" }}
             />
-            <ProductButtons className="custom-buttons" />
+            <ProductButtons
+              className="custom-buttons"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            />
           </ProductCard>
         ))}
       </div>
