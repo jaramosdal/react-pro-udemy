@@ -1,49 +1,15 @@
-import { useState } from "react";
 import {
   ProductCard,
   ProductButtons,
   ProductImage,
   ProductTitle,
 } from "../components";
-import { Product, onChangeArgs } from "../interfaces/interfaces";
 import "../styles/custom-styles.css";
-
-const product1 = {
-  id: "1",
-  title: "Coffe Mug - Card",
-  img: "./coffee-mug.png",
-};
-
-const product2 = {
-  id: "2",
-  title: "Coffe Mug - Meme",
-  img: "./coffee-mug2.png",
-};
-
-const products: Product[] = [product1, product2];
-
-interface ProductInCart extends Product {
-  count: number;
-}
+import { products } from "../data/products";
+import { useShoppingCart } from "../hooks/useShoppingCart";
 
 const ShoppingPage = () => {
-  const [shoppingCart, setShoppingCart] = useState<{
-    [key: string]: ProductInCart;
-  }>({});
-
-  const onProductCountChange = ({ count, product }: onChangeArgs) => {
-    setShoppingCart((oldShoppingCart) => {
-      if (count === 0 && oldShoppingCart) {
-        const { [product.id]: toDelete, ...rest } = oldShoppingCart;
-        return rest;
-      }
-
-      return {
-        ...shoppingCart,
-        [product.id]: { ...product, count },
-      };
-    });
-  };
+  const { shoppingCart, onProductCountChange } = useShoppingCart();
 
   return (
     <div>

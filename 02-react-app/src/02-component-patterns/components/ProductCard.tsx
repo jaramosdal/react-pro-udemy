@@ -28,7 +28,7 @@ export const ProductCard = ({
   onChange,
   value,
 }: Props) => {
-  const { counter, increaseBy, decreaseBy } = useProduct({
+  const { counter, increaseBy } = useProduct({
     onChange,
     product,
     value,
@@ -38,7 +38,6 @@ export const ProductCard = ({
       value={{
         counter,
         increaseBy,
-        decreaseBy,
         product,
       }}
     >
