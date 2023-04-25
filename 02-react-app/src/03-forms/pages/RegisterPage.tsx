@@ -4,7 +4,6 @@ import { useForm } from "../hooks/useForm";
 
 const RegisterPage = () => {
   const {
-    formData,
     onChange,
     resetForm,
     isValidEmail,
