@@ -1,4 +1,5 @@
 import RegisterPage from "./RegisterPage";
+import RegisterFormikPage from "./RegisterFormikPage";
 import FormikBasicPage from "./FormikBasicPage";
 import FormikYupPage from "./FormikYupPage";
 import FormikComponentsPage from "./FormikComponentsPage";
@@ -6,6 +7,7 @@ import FormikAbstractationPage from "./FormikAbstractationPage";
 
 export {
   RegisterPage,
+  RegisterFormikPage,
   FormikBasicPage,
   FormikYupPage,
   FormikComponentsPage,
