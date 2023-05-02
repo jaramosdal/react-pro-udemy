@@ -4,6 +4,7 @@ import FormikBasicPage from "./FormikBasicPage";
 import FormikYupPage from "./FormikYupPage";
 import FormikComponentsPage from "./FormikComponentsPage";
 import FormikAbstractationPage from "./FormikAbstractationPage";
+import DynamicFormPage from "./DynamicFormPage";
 
 export {
   RegisterPage,
@@ -12,4 +13,5 @@ export {
   FormikYupPage,
   FormikComponentsPage,
   FormikAbstractationPage,
+  DynamicFormPage,
 };
