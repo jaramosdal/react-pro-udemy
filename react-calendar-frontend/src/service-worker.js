@@ -72,6 +72,45 @@ self.addEventListener("message", (event) => {
 
 // Any other custom service worker logic can go here.
 
-self.addEventListener("install", (event) => {
-  console.log("Instalando...");
+self.addEventListener("install", async (event) => {
+  const cache = await caches.open("cache-1");
+
+  cache.addAll([
+    'https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk',
+    "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css",
+    "/favicon.ico",
+  ]);
+});
+
+// Network first with cache fallback
+const apiOfflineFallbacks = [
+  "http://localhost:4000/api/auth/renew",
+  "http://localhost:4000/api/auth/events",
+];
+
+self.addEventListener("fetch", async (event) => {
+  if (!apiOfflineFallbacks.includes(event.request.url)) return;
+
+  console.log(event.request.url);
+  console.log("VOY A MANEJAR EL RENEW");
+
+  const resp = fetch(event.request)
+    .then((response) => {
+      if (!response) {
+        return caches.match(event.request);
+      }
+
+      // Guardar en caché la respuesta
+      caches
+        .open("cache-dynamic")
+        .then((cache) => cache.put(event.request, response));
+
+      return response.clone();
+    })
+    .catch((err) => {
+      console.log("offline response");
+      return caches.match(event.request);
+    });
+
+  event.respondWith(resp);
 });
